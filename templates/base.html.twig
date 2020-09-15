@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        {% block stylesheets %}{% endblock %}
+        <link rel="stylesheet" type="text/css" href="{{asset('css/bootstrap.min.css')}}">
+    </head>
+    <body>
+        {% block header %}
+        Je suis le block HEADER <br>
+        {% endblock %}
+        {% block body %}
+        Je suis le block le block BOdy
+        {% endblock %}
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>
