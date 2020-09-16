@@ -2,17 +2,15 @@
 
 {% block title %}Hello HomeController!{% endblock %}
 
+{% block body%}
 
+	{%  set variable = 'Je suis la variable définie en twig' %}
 
-{% block body %}
+	{{ variable }}
 
-{% set variable = 'Je suis la variable définie en twig' %}
+	{% set tableau = ['Moussa', 'AFPA', 'Sylvie'] %}
 
-{{ variable }}
-
-{% set tableau = ['EZDIN', 'BMW' ,'SYLVIE'] %}
-{% for nom in tableau %}
-    {{ nom }}
-     {% endfor %}
-
-{% endblock  %}
+	{% for nom in tableau %}
+		{{ nom }}
+	{% endfor %}
+{% endblock %}

@@ -47,4 +47,8 @@ class ArticleRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function getLastInserted($entity, $amount)
+    {
+        return $this->getEntityManager()->createdQuery("SELECT e FROM $entity e ORDER BY e.id DESC")->setMaxResults($amount)->getResult();
+    }
 }

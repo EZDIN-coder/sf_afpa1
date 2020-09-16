@@ -9,6 +9,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Commentaire;
+use App\Form\CommentaireType;
 
 /**
  * @Route("/article")
@@ -20,6 +22,10 @@ class ArticleController extends AbstractController
      */
     public function index(ArticleRepository $articleRepository): Response
     {
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $articles = $entityManager->getRepository(Article::class)->getLastInserted('App:article', 5);
+
         return $this->render('article/index.html.twig', [
             'articles' => $articleRepository->findAll(),
         ]);
@@ -64,14 +70,42 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="article_show", methods={"GET"})
+     * @Route("/{id}", name="article_show",  methods={"GET","POST"})
      */
-    public function show(Article $article): Response
+    public function show(Article $article, Request $request): Response
     {
+        $commentaire = new Commentaire();
+        $form = $this->createForm(CommentaireType::class, $commentaire);
+        $form->handleRequest($request);
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+
+            $commentaire->setUser($this->getUser());
+            $commentaire->setArticle($article);
+
+
+
+            $entityManager->persist($commentaire);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('article_show', ['id'=>$article->getId()]);
+        }
+
+        $liste_commentaires = $entityManager ->getRepository('App:Commentaire') ->findByArticle($article);
+
         return $this->render('article/show.html.twig', [
             'article' => $article,
+            'form'   => $form ->createView(),
+            'liste_commentaires' => $liste_commentaires,
         ]);
     }
+        //return $this->render('article/show.html.twig', [
+            //'article' => $article,
+        //]);
+    
 
     /**
      * @Route("/{id}/edit", name="article_edit", methods={"GET","POST"})

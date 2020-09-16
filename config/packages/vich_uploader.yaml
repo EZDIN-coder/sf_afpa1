@@ -1,5 +1,6 @@
 vich_uploader:
     db_driver: orm
+
     mappings:
         post_images:
             uri_prefix:         '%app.path.post_images%'

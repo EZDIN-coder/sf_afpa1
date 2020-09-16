@@ -2,19 +2,20 @@
 
 namespace App\Entity;
 
-use App\Repository\ArticleRepository;
+use App\Repository\PostRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity
  * @Vich\Uploadable
- * @ORM\Entity(repositoryClass=ArticleRepository::class)
+ * @ORM\Entity(repositoryClass=PostRepository::class)
  */
-class Article
+class Post
 {
     /**
      * @ORM\Id
@@ -24,54 +25,51 @@ class Article
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=50)
      */
     private $titre;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=150)
      */
     private $resume;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(type="text")
      */
     private $contenu;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="datetime")
      */
     private $created_at;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    //private $auteur;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(type="string", length=255)
      */
     private $image;
-        /**
+
+    /**
      * @Vich\UploadableField(mapping="post_images", fileNameProperty="image")
      * @var File
      */
     private $imageFile;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="articles")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="posts")
      */
     private $user;
 
     /**
-     * @ORM\OneToMany(targetEntity=Commentaire::class, mappedBy="article")
+     * @ORM\OneToMany(targetEntity=Commentaire::class, mappedBy="post")
      */
     private $commentaires;
 
-     public function __construct(){
+    public function __construct()
+    {
         $this->created_at = new \Datetime();
         $this->commentaires = new ArrayCollection();
-      }
+    }
 
     public function getId(): ?int
     {
@@ -83,21 +81,31 @@ class Article
         return $this->titre;
     }
 
-    public function setTitre(?string $titre): self
+    public function setTitre(string $titre): self
     {
         $this->titre = $titre;
 
         return $this;
     }
 
- 
+    public function getResume(): ?string
+    {
+        return $this->resume;
+    }
+
+    public function setResume(string $resume): self
+    {
+        $this->resume = $resume;
+
+        return $this;
+    }
 
     public function getContenu(): ?string
     {
         return $this->contenu;
     }
 
-    public function setContenu(?string $contenu): self
+    public function setContenu(string $contenu): self
     {
         $this->contenu = $contenu;
 
@@ -109,54 +117,41 @@ class Article
         return $this->created_at;
     }
 
-    public function setCreatedAt(?\DateTimeInterface $created_at): self
+    public function setCreatedAt(\DateTimeInterface $created_at): self
     {
         $this->created_at = $created_at;
 
         return $this;
     }
 
-    
-
     public function getImage(): ?string
     {
         return $this->image;
     }
 
-    public function setImage(?string $image): self
+    public function setImage(string $image): self
     {
         $this->image = $image;
 
         return $this;
     }
 
-    public function getUser(): ?user
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUser(?user $user): self
+    public function setUser(?User $user): self
     {
         $this->user = $user;
 
         return $this;
     }
 
-    public function getResume(): ?string
-    {
-        return $this->resume;
-    }
-
-    public function setResume(?string $resume): self
-    {
-        $this->resume = $resume;
-
-        return $this;
-    }
     public function setImageFile(File $image = null)
     {
         $this->imageFile = $image;
-              
+
     }
 
     public function getImageFile()
@@ -176,7 +171,7 @@ class Article
     {
         if (!$this->commentaires->contains($commentaire)) {
             $this->commentaires[] = $commentaire;
-            $commentaire->setArticle($this);
+            $commentaire->setPost($this);
         }
 
         return $this;
@@ -187,16 +182,16 @@ class Article
         if ($this->commentaires->contains($commentaire)) {
             $this->commentaires->removeElement($commentaire);
             // set the owning side to null (unless already changed)
-            if ($commentaire->getArticle() === $this) {
-                $commentaire->setArticle(null);
+            if ($commentaire->getPost() === $this) {
+                $commentaire->setPost(null);
             }
         }
 
         return $this;
     }
+
     public function __toString()
     {
-      return $this->titre;
+        return $this->titre;
     }
-
 }

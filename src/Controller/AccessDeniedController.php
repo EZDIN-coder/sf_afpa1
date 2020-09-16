@@ -5,13 +5,13 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class HomeController extends AbstractController
+class AccessDeniedController extends AbstractController
 {
     /**
-     * @Route("/", name="home")
+     * @Route("/access/denied", name="access_denied")
      */
     public function index()
     {
-        return $this->render('home/index.html.twig');
+        return $this->render('access_denied/index.html.twig');
     }
 }

@@ -18,14 +18,19 @@ class Etudiant
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=30, nullable=true)
+     * @ORM\Column(type="string", length=10)
      */
     private $nom;
 
     /**
-     * @ORM\Column(type="string", length=30, nullable=true)
+     * @ORM\Column(type="string", length=20)
      */
     private $prenom;
+
+    /**
+     * @ORM\Column(type="string", length=200)
+     */
+    private $adresse;
 
     public function getId(): ?int
     {
@@ -37,7 +42,7 @@ class Etudiant
         return $this->nom;
     }
 
-    public function setNom(?string $nom): self
+    public function setNom(string $nom): self
     {
         $this->nom = $nom;
 
@@ -49,9 +54,21 @@ class Etudiant
         return $this->prenom;
     }
 
-    public function setPrenom(?string $prenom): self
+    public function setPrenom(string $prenom): self
     {
         $this->prenom = $prenom;
+
+        return $this;
+    }
+
+    public function getAdresse(): ?string
+    {
+        return $this->adresse;
+    }
+
+    public function setAdresse(string $adresse): self
+    {
+        $this->adresse = $adresse;
 
         return $this;
     }

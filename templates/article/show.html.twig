@@ -43,4 +43,21 @@
     <a href="{{ path('article_edit', {'id': article.id}) }}">edit</a>
 
     {{ include('article/_delete_form.html.twig') }}
+    <div>
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class="btn">{{ button_label|default('Save') }}</button>
+    {{ form_end(form) }}
+   </div>
+   <div class="container">
+   {% for comment in liste_commentaires %}
+    <hr>
+    <i> Posté par : {{.user}}</i>
+
+           {{comment.user}}
+     </p> {{comment.contenu}} </p>
+    
+
+   {% endfor %}
+
 {% endblock %}
