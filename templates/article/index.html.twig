@@ -10,7 +10,7 @@
             <tr>
                 <th>Id</th>
                 <th>Titre</th>
-                <th>Résumé</th>
+                <th>Resume</th>
                 <th>Contenu</th>
                 <th>Created_at</th>
                 <th>Auteur</th>
@@ -23,12 +23,12 @@
             <tr>
                 <td>{{ article.id }}</td>
                 <td>{{ article.titre }}</td>
-                <td>{{ article.résumé }}</td>
+                <td>{{ article.resume }}</td>
                 <td>{{ article.contenu }}</td>
                 <td>{{ article.createdAt ? article.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ article.auteur }}</td>
-                <td>{{ article.image }}</td>
-                <td>
+                <td>{{ article.user }}</td>
+               
+                <td><img src="{{asset('uploads/images/article/')}}{{article.image}}"></td>
                     <a href="{{ path('article_show', {'id': article.id}) }}">show</a>
                     <a href="{{ path('article_edit', {'id': article.id}) }}">edit</a>
                 </td>

@@ -30,17 +30,32 @@ class ArticleController extends AbstractController
      */
     public function new(Request $request): Response
     {
+        if (!$this->getUser()){
+           $this->addFlash("danger","Merci de vous connecter");
+          return $this->redirectToRoute('app_login');
+
+        }
+       
         $article = new Article();
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+
+            $article->setUser($this->getuser());
+
             $entityManager->persist($article);
             $entityManager->flush();
 
-            return $this->redirectToRoute('article_index');
+            if (!$this->getUser()){
+                $this->addFlash("danger");
+               return $this->redirectToRoute('app_login');
+
+
+            //return $this->redirectToRoute('article_index');
         }
+    }
 
         return $this->render('article/new.html.twig', [
             'article' => $article,

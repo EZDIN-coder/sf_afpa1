@@ -4,8 +4,12 @@ namespace App\Entity;
 
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
+ * @ORM\Entity
+ * @Vich\Uploadable
  * @ORM\Entity(repositoryClass=ArticleRepository::class)
  */
 class Article
@@ -25,7 +29,7 @@ class Article
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $résumé;
+    private $resume;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -40,12 +44,26 @@ class Article
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $auteur;
+    //private $auteur;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
     private $image;
+        /**
+     * @Vich\UploadableField(mapping="post_images", fileNameProperty="image")
+     * @var File
+     */
+    private $imageFile;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="articles")
+     */
+    private $user;
+
+     public function __construct(){
+        $this->created_at = new \Datetime();
+      }
 
     public function getId(): ?int
     {
@@ -64,17 +82,7 @@ class Article
         return $this;
     }
 
-    public function getRésumé(): ?string
-    {
-        return $this->résumé;
-    }
-
-    public function setRésumé(?string $résumé): self
-    {
-        $this->résumé = $résumé;
-
-        return $this;
-    }
+ 
 
     public function getContenu(): ?string
     {
@@ -100,17 +108,7 @@ class Article
         return $this;
     }
 
-    public function getAuteur(): ?string
-    {
-        return $this->auteur;
-    }
-
-    public function setAuteur(?string $auteur): self
-    {
-        $this->auteur = $auteur;
-
-        return $this;
-    }
+    
 
     public function getImage(): ?string
     {
@@ -123,4 +121,39 @@ class Article
 
         return $this;
     }
+
+    public function getUser(): ?user
+    {
+        return $this->user;
+    }
+
+    public function setUser(?user $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getResume(): ?string
+    {
+        return $this->resume;
+    }
+
+    public function setResume(?string $resume): self
+    {
+        $this->resume = $resume;
+
+        return $this;
+    }
+    public function setImageFile(File $image = null)
+    {
+        $this->imageFile = $image;
+              
+    }
+
+    public function getImageFile()
+    {
+        return $this->imageFile;
+    }
+
 }

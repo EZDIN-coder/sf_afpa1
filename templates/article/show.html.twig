@@ -16,8 +16,8 @@
                 <td>{{ article.titre }}</td>
             </tr>
             <tr>
-                <th>Résumé</th>
-                <td>{{ article.résumé }}</td>
+                <th>Resume</th>
+                <td>{{ article.resume }}</td>
             </tr>
             <tr>
                 <th>Contenu</th>
@@ -27,10 +27,10 @@
                 <th>Created_at</th>
                 <td>{{ article.createdAt ? article.createdAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
-            <tr>
+            {# <tr>
                 <th>Auteur</th>
                 <td>{{ article.auteur }}</td>
-            </tr>
+            </tr> #}
             <tr>
                 <th>Image</th>
                 <td>{{ article.image }}</td>
